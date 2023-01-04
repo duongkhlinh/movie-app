@@ -3,10 +3,47 @@
     <!-- MainVisual -->
     <MainVisual />
 
+    <!-- Search -->
+    <div class="container search">
+      <input v-model.lazy="searchInput" type="text" placeholder="Search show" @change="$fetch" />
+      <!-- Show "Clear Search" only when input is not empty -->
+      <button v-show="searchInput !== ''" class="button" @click="clearSearch">Clear Search</button>
+    </div>
+
     <!-- Movies -->
     <div class="container movies">
-      <div id="movie-grid" class="movie-grid">
-        <div v-for='(movie, index) in movies' :key='index' class="movie">
+      <!-- Display search result if search input is not empty -->
+      <div v-if="searchInput !== ''" class="movie-grid">
+        <div v-for="(movie, index) in searchResult" :key="index" class="movie">
+          <div class="movie-img">
+            <img :src="`${movie.show.image.medium}`" alt="" />
+            <!-- Show NA when rating average is null -->
+            <p class="review">{{ movie.show.rating.average ? movie.show.rating.average : 'NA' }}</p>
+            <!-- Shorten the movie summary and add ... to the summary only if the length is larger than 200 -->
+            <div class="summary">
+              {{ movie.show.summary.slice(0, 200) }}
+              <span v-if="movie.show.summary.length > 200">...</span>
+            </div>
+          </div>
+          <div class="info">
+            <!-- Shorten the movie title -->
+            <p class="title">
+              {{ movie.show.name.slice(0, 25) }}
+              <span v-if="movie.show.name.length > 25">...</span>
+            </p>
+            <!-- Link to each movie's id -->
+            <NuxtLink
+            class="button button-light"
+            :to="{ name: 'movies-movieid', params: { movieid: movie.show.id }}">
+            Get More Info
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+
+      <!-- Display now streaming movies otherwise -->
+      <div v-else id="movie-grid" class="movie-grid">
+        <div v-for="(movie, index) in movies" :key="index" class="movie">
           <div class="movie-img">
             <img :src="`${movie.image.medium}`" alt="" />
             <!-- Show NA when rating average is null -->
@@ -14,14 +51,14 @@
             <!-- Shorten the movie summary and add ... to the summary only if the length is larger than 200 -->
             <div class="summary">
               {{ movie.summary.slice(0, 200) }}
-              <span v-if='movie.summary.length > 200'>...</span>
+              <span v-if="movie.summary.length > 200">...</span>
             </div>
           </div>
           <div class="info">
             <!-- Shorten the movie title -->
             <p class="title">
               {{ movie.name.slice(0, 25) }}
-              <span v-if='movie.name.length > 25'>...</span>
+              <span v-if="movie.name.length > 25">...</span>
             </p>
             <!-- Link to each movie's id -->
             <NuxtLink
@@ -43,21 +80,37 @@ export default {
   data() {
     return {
       movies: [],
+      searchInput: '',
+      searchResult: [],
     }
   },
   async fetch() {
-    await this.getMovies()
+    // fetch movies from search API when search input is not empty
+    if (this.searchInput !== '') {
+      await this.searchMovies()
+    } else {
+      await this.getMovies()
+    }
   },
   methods: {
     async getMovies() {
-      const data = axios.get(
-        'https://api.tvmaze.com/shows?page=1'
-      )
+      const data = axios.get('https://api.tvmaze.com/shows?page=1')
       const result = await data
       result.data.forEach((movie) => {
         this.movies.push(movie)
       })
     },
+    async searchMovies() {
+      const data = axios.get(`https://api.tvmaze.com/search/shows?q=${this.searchInput}`)
+      const result = await data
+      result.data.forEach((movie) => {
+        this.searchResult.push(movie)
+      })
+    },
+    clearSearch() {
+      this.searchInput = ''
+      this.searchResult = []
+    }
   }
 }
 </script>
