@@ -10,8 +10,12 @@
       <button v-show="searchInput !== ''" class="button" @click="clearSearch">Clear Search</button>
     </div>
 
+    <!-- Loading -->
+    <!-- Only show loading animation when fetch state is pending -->
+    <LoadingComponent v-if="$fetchState.pending" />
+
     <!-- Movies -->
-    <div class="container movies">
+    <div v-else class="container movies">
       <!-- Display search result if search input is not empty -->
       <div v-if="searchInput !== ''" class="movie-grid">
         <div v-for="(movie, index) in searchResult" :key="index" class="movie">
@@ -88,10 +92,12 @@ export default {
     // fetch movies from search API when search input is not empty
     if (this.searchInput !== '') {
       await this.searchMovies()
-    } else {
+    } 
+    if (this.searchInput === '') {
       await this.getMovies()
     }
   },
+  fetchDelay: 1000,
   methods: {
     async getMovies() {
       const data = axios.get('https://api.tvmaze.com/shows?page=1')
@@ -111,7 +117,7 @@ export default {
       this.searchInput = ''
       this.searchResult = []
     }
-  }
+  },
 }
 </script>
 

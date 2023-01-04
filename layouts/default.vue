@@ -1,5 +1,5 @@
 <template>
-  <!-- Keep alive stores Fetches, so it does recall the fetch -->
+  <!-- use keep-alive for caching fetches to improve performance -->
   <div class="app">
     <Nuxt keep-alive />
   </div>
