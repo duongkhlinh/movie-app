@@ -3,9 +3,13 @@
     <img src="../assets/imgs/mainvisual.jpg" alt="" />
     <div class="text-container">
       <div class="text">
-        <span class="mini-heading">Now Streaming</span>
-        <h1><span>Now</span> Streaming</h1>
+        <span class="mini-heading">MOVIE CATALOGUE</span>
+        <h1>What's new?</h1>
         <a href="#movie-grid" class="button">View Movies</a>
+        <div class="remark">
+        <p>This app is only meant for demonstrating the basic usage of NuxtJS</p>
+        <a href="http://bit.ly/3Qkl8ju">Click here to see source code on Github</a>
+        </div>
       </div>
     </div>
   </div>
@@ -59,6 +63,15 @@ export default {
       margin: 0 auto;
     }
 
+    .remark {
+      margin-top: 32px;
+      color: #ffffff;
+      a {
+        color: #ffffff;
+        display: block;
+      }
+    }
+
     .mini-heading {
       font-weight: 600;
       font-size: 18px;
@@ -73,7 +86,7 @@ export default {
     h1 {
       color: #fff;
       font-size: 64px;
-      font-weight: 200;
+      font-weight: 600;
       margin-bottom: 8px;
 
       @media (min-width: 750px) {

@@ -5,7 +5,7 @@
 
     <!-- Search -->
     <div class="container search">
-      <input v-model.lazy="searchInput" type="text" placeholder="Search show" @change="$fetch" />
+      <input v-model.lazy="searchInput" type="text" placeholder="Search for movie" @change="$fetch" />
       <!-- Show "Clear Search" only when input is not empty -->
       <button v-show="searchInput !== ''" class="button" @click="clearSearch">Clear Search</button>
     </div>
@@ -20,7 +20,8 @@
       <div v-if="searchInput !== ''" class="movie-grid">
         <div v-for="(movie, index) in searchResult" :key="index" class="movie">
           <div class="movie-img">
-            <img :src="`${movie.show.image.medium}`" alt="" />
+            <!-- Display dummy image when image is null -->
+            <img :src="`${movie.show.image ? movie.show.image.medium : 'https://dummyimage.com/210x295/ebebeb/333333&text=No+Image'}`" alt="movie image" />
             <!-- Show NA when rating average is null -->
             <p class="review">{{ movie.show.rating.average ? movie.show.rating.average : 'NA' }}</p>
             <!-- Shorten the movie summary and add ... to the summary only if the length is larger than 200 -->
@@ -32,7 +33,7 @@
           <div class="info">
             <!-- Shorten the movie title -->
             <p class="title">
-              {{ movie.show.name.slice(0, 25) }}
+              <span>{{ movie.show.name.slice(0, 25) }}</span>
               <span v-if="movie.show.name.length > 25">...</span>
             </p>
             <!-- Link to each movie's id -->
@@ -49,7 +50,7 @@
       <div v-else id="movie-grid" class="movie-grid">
         <div v-for="(movie, index) in movies" :key="index" class="movie">
           <div class="movie-img">
-            <img :src="`${movie.image.medium}`" alt="" />
+            <img :src="`${movie.image ? movie.image.medium : 'https://dummyimage.com/210x295/ebebeb/333333&text=No+Image'}`" alt="movie image" />
             <!-- Show NA when rating average is null -->
             <p class="review">{{ movie.rating.average ? movie.rating.average : 'NA' }}</p>
             <!-- Shorten the movie summary and add ... to the summary only if the length is larger than 200 -->
@@ -61,7 +62,7 @@
           <div class="info">
             <!-- Shorten the movie title -->
             <p class="title">
-              {{ movie.name.slice(0, 25) }}
+              <span>{{ movie.name.slice(0, 25) }}</span>
               <span v-if="movie.name.length > 25">...</span>
             </p>
             <!-- Link to each movie's id -->
@@ -101,12 +102,12 @@ export default {
   fetchDelay: 1000,
   head() {
     return {
-      title: 'Movie Show Catalogue App',
+      title: 'Movie Catalogue App',
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: 'Get all the latest information about movie shows'
+          content: 'Get all the latest information about movies'
         },
         {
           hid: 'keywords',

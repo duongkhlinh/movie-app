@@ -4,24 +4,28 @@
     <NuxtLink class="button" :to="{ name: 'index' }"> Back </NuxtLink>
     <div class="movie-info">
       <div class="movie-img">
-        <img :src="`${movie.image.medium}`" alt="" />
+        <img :src="`${movie.image ? movie.image.medium : 'https://dummyimage.com/210x295/ebebeb/333333&text=No+Image'}`" alt="movie image`" />
       </div>
       <div class="movie-content">
         <h1>{{ movie.name }}</h1>
         <p class="movie-fact">
-          <span>Language: {{ movie.language }}</span>
+          <span class="movie-fact-title">Language:</span>
+          <span>{{ movie.language }}</span>
         </p>
         <p class="movie-fact">
-          <span>Status: {{ movie.status }}</span>
+          <span class="movie-fact-title">Status:</span>
+          <span>{{ movie.status }}</span>
         </p>
         <p class="movie-fact">
-          <span>Premiered: {{ movie.premiered }}</span>
+          <span class="movie-fact-title">Premiered:</span>
+          <span>{{ movie.premiered }}</span>
         </p>
         <p class="movie-fact">
-          <span>Ended: {{ movie.ended }}</span>
+          <span class="movie-fact-title">Ended:</span>
+          <span>{{ movie.ended }}</span>
         </p>
         <p class="movie-fact">
-          <span>Summary:</span>
+          <span class="movie-fact-title">Summary:</span>
           <span v-html="`${movie.summary}`"></span>
         </p>
       </div>
@@ -67,6 +71,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   padding: 32px 16px;
+  width: 80%;
 
   .button {
     align-self: flex-start;
@@ -79,6 +84,7 @@ export default {
     align-items: center;
     gap: 32px;
     color: #fff;
+
     @media (min-width: 800px) {
       flex-direction: row;
       align-items: flex-start;
@@ -106,7 +112,7 @@ export default {
         font-size: 20px;
         line-height: 1.5;
 
-        span {
+        &-title {
           font-weight: 600;
           text-decoration: underline;
         }
