@@ -33,20 +33,25 @@ export default {
     name: "SingleMovie",
     components: { LoadingComponent },
     data() {
-        return {
-            movie: null,
-        };
+      return {
+          movie: '',
+      };
     },
     async fetch() {
-        await this.getSingleMovie();
+      await this.getSingleMovie();
     },
     fetchDelay: 1000,
+    head() {
+      return {
+        title: this.movie.name,
+      }
+    },
     methods: {
-        async getSingleMovie() {
-            const data = axios.get(`https://api.tvmaze.com/shows/${this.$route.params.movieid}`);
-            const result = await data;
-            this.movie = result.data;
-        }
+      async getSingleMovie() {
+          const data = axios.get(`https://api.tvmaze.com/shows/${this.$route.params.movieid}`);
+          const result = await data;
+          this.movie = result.data;
+      }
     },
 }
 </script>

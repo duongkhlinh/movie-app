@@ -98,6 +98,23 @@ export default {
     }
   },
   fetchDelay: 1000,
+  head() {
+    return {
+      title: 'Movie Show Catalogue App',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Get all the latest information about movie shows'
+        },
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: 'movie,stream,streaming'
+        }
+      ]
+    }
+  },
   methods: {
     async getMovies() {
       const data = axios.get('https://api.tvmaze.com/shows?page=1')
