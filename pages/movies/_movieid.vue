@@ -20,7 +20,10 @@
         <p class="movie-fact">
           <span>Ended: {{ movie.ended }}</span>
         </p>
-        <p class="movie-fact"><span>Summary:</span> {{ movie.summary }}</p>
+        <p class="movie-fact">
+          <span>Summary:</span>
+          <span v-html="`${movie.summary}`"></span>
+        </p>
       </div>
     </div>
   </div>
@@ -48,9 +51,9 @@ export default {
     },
     methods: {
       async getSingleMovie() {
-          const data = axios.get(`https://api.tvmaze.com/shows/${this.$route.params.movieid}`);
-          const result = await data;
-          this.movie = result.data;
+        const data = axios.get(`https://api.tvmaze.com/shows/${this.$route.params.movieid}`);
+        const result = await data;
+        this.movie = result.data;
       }
     },
 }

@@ -25,7 +25,7 @@
             <p class="review">{{ movie.show.rating.average ? movie.show.rating.average : 'NA' }}</p>
             <!-- Shorten the movie summary and add ... to the summary only if the length is larger than 200 -->
             <div class="summary">
-              {{ movie.show.summary.slice(0, 200) }}
+              <span v-html="`${movie.show.summary.slice(0, 200)}`"></span>
               <span v-if="movie.show.summary.length > 200">...</span>
             </div>
           </div>
@@ -54,7 +54,7 @@
             <p class="review">{{ movie.rating.average ? movie.rating.average : 'NA' }}</p>
             <!-- Shorten the movie summary and add ... to the summary only if the length is larger than 200 -->
             <div class="summary">
-              {{ movie.summary.slice(0, 200) }}
+              <span v-html="`${movie.summary.slice(0, 200)}`"></span>
               <span v-if="movie.summary.length > 200">...</span>
             </div>
           </div>
@@ -92,7 +92,8 @@ export default {
     // fetch movies from search API when search input is not empty
     if (this.searchInput !== '') {
       await this.searchMovies()
-    } 
+      return
+    }
     if (this.searchInput === '') {
       await this.getMovies()
     }
@@ -138,7 +139,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .home {
   .loading {
     padding-top: 120px;
@@ -230,6 +231,10 @@ export default {
             color: #fff;
             transform: translateY(100%);
             transition: 0.3s ease-in-out all;
+
+            p {
+              display: inline;
+            }
           }
         }
 
